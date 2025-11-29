@@ -1,12 +1,10 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=yes" />
   <title>Infinity</title>
   <link rel="icon" href="favicon.png" type="image/png">
-
   <style>
     :root {
       --radius: 14px;
@@ -19,30 +17,25 @@
       --day-bg: #fff4da;
       --day-hover: #ffe8b3;
       --booked-bg: #ffcc80;
-      --multi-bg: #f2b56e;
+      --multi-bg: #c579c3;
       --muted: #8d704b;
       --success: #0a7a33;
       --danger: #b91c1c;
+      /* Slot colors */
+      --morning-color: #2e7d32; /* deep green */
+      --evening-color: #0f4c81; /* deep blue */
+      --morning-bg: #e6f4ea;
+      --evening-bg: #e8f0fb;
     }
 
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow-x: hidden;
-    }
-
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html, body { width:100%; height:100%; overflow-x:hidden; }
     body {
-      margin: 0;
-      padding: 0;
+      margin:0; padding:0;
       font-family: Inter, system-ui, -apple-system, sans-serif;
       background: var(--bg-main);
       color: var(--header-text);
-      font-size: 16px;
+      font-size:16px;
     }
 
     .container {
@@ -52,215 +45,26 @@
       border-radius: var(--radius);
       background: var(--bg-card);
       border: 4px solid var(--border);
-      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.15);
     }
 
-    @media (max-width: 1024px) {
-      .container {
-        margin: 15px auto;
-        padding: 16px;
-        border-width: 3px;
-      }
-    }
+    h1 { text-align:center; font-size:22px; font-weight:800; color:var(--header-text); margin:0; line-height:1.3; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; border-bottom:2px solid var(--border); padding-bottom:12px; margin-bottom:12px; gap:12px; flex-wrap:wrap; }
+    .controls { display:flex; gap:8px; align-items:center; justify-content:center; width:100%; flex-wrap:wrap; }
 
-    @media (max-width: 768px) {
-      .container {
-        margin: 12px auto;
-        padding: 12px;
-        border-width: 2px;
-      }
+    select, button, input, textarea {
+      padding:8px 12px; border-radius:10px; border:1px solid var(--border);
+      background:#fff8ed; color:var(--header-text); font-family:inherit; font-size:14px; min-height:40px;
+      transition: all 0.15s ease;
     }
+    button.btn { background:var(--accent); color:white; border:none; font-weight:600; cursor:pointer; white-space:nowrap; flex-shrink:0; }
+    button.secondary { background:white; color:var(--accent); border:2px solid var(--accent); }
+    button:hover:not(:active){ opacity:0.95; }
+    :focus { outline:2px solid var(--accent); outline-offset:2px; }
 
-    @media (max-width: 480px) {
-      .container {
-        margin: 8px auto;
-        padding: 10px;
-        border-width: 2px;
-      }
-    }
-
-    h1 {
-      text-align: center;
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--header-text);
-      margin: 0;
-      line-height: 1.3;
-      word-break: break-word;
-    }
-
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 18px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 16px;
-      }
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 12px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    @media (max-width: 900px) {
-      .topbar {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .topbar {
-        gap: 8px;
-        padding-bottom: 10px;
-      }
-    }
-
-    .controls {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-      justify-content: center;
-      width: 100%;
-    }
-
-    @media (max-width: 900px) {
-      .controls {
-        order: 3;
-      }
-    }
-
-    select,
-    button,
-    input,
-    textarea {
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: #fff8ed;
-      color: var(--header-text);
-      font-family: inherit;
-      font-size: 14px;
-      min-height: 40px;
-      transition: all 0.2s ease;
-    }
-
-    @media (max-width: 480px) {
-      select,
-      button,
-      input,
-      textarea {
-        padding: 10px 12px;
-        min-height: 44px;
-        font-size: 16px;
-      }
-    }
-
-    button.btn {
-      background: var(--accent);
-      color: white;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
-    button.btn:active {
-      transform: scale(0.98);
-    }
-
-    button.secondary {
-      background: white;
-      color: var(--accent);
-      border: 2px solid var(--accent);
-    }
-
-    button:hover:not(:active) {
-      opacity: 0.9;
-    }
-
-    select:focus,
-    button:focus,
-    input:focus,
-    textarea:focus {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .main {
-      display: grid;
-      grid-template-columns: 1fr 350px;
-      gap: 20px;
-      margin-top: 16px;
-    }
-
-    @media (max-width: 1024px) {
-      .main {
-        gap: 16px;
-      }
-    }
-
-    @media (max-width: 900px) {
-      .main {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-    }
-
-    .weekdays {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      margin-bottom: 10px;
-      text-align: center;
-      font-weight: 700;
-      color: var(--accent-dark);
-      gap: 8px;
-    }
-
-    @media (max-width: 768px) {
-      .weekdays {
-        gap: 6px;
-        font-size: 13px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .weekdays {
-        gap: 4px;
-        font-size: 11px;
-      }
-    }
-
-    .calendar {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 10px;
-    }
-
-    @media (max-width: 768px) {
-      .calendar {
-        gap: 8px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .calendar {
-        gap: 4px;
-      }
-    }
+    .main { display:grid; grid-template-columns:1fr 350px; gap:20px; margin-top:16px; }
+    .weekdays { display:grid; grid-template-columns:repeat(7, 1fr); margin-bottom:10px; text-align:center; font-weight:700; color:var(--accent-dark); gap:8px; }
+    .calendar { display:grid; grid-template-columns:repeat(7,1fr); gap:10px; }
 
     .day {
       background: var(--day-bg);
@@ -269,508 +73,84 @@
       min-height: 80px;
       padding: 8px;
       position: relative;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      user-select: none;
+      display:flex;
+      flex-direction:column;
+      user-select:none;
+      overflow:hidden;
     }
 
-    @media (max-width: 768px) {
-      .day {
-        min-height: 70px;
-        padding: 6px;
-        border-radius: 10px;
-        font-size: 13px;
-      }
-    }
+    .day[aria-hidden="true"] { visibility:hidden; pointer-events:none; }
 
-    @media (max-width: 480px) {
-      .day {
-        min-height: 55px;
-        padding: 4px;
-        border-radius: 8px;
-        border-width: 1px;
-        font-size: 11px;
-      }
-    }
+    .day:hover { transform: scale(1.02); background: var(--day-hover); }
+    .date-num { position:absolute; right:8px; top:4px; font-weight:700; color:var(--accent-dark); font-size:14px; z-index:2; }
+    .available { color:var(--muted); font-size:12px; margin-top:auto; text-align:center; padding-top:4px; }
 
-    .day:hover:not(:active) {
-      background: var(--day-hover);
-      transform: scale(1.03);
-    }
+    /* Booking state backgrounds (when whole-day or slot mixture) */
+    .booked-morning { background: var(--morning-bg) !important; border-color: rgba(46,125,50,0.4) !important; }
+    .booked-evening { background: var(--evening-bg) !important; border-color: rgba(15,76,129,0.4) !important; }
+    .booked-multi { background: var(--multi-bg) !important; border-color:#c579c3 !important; color: white !important; }
 
-    .day:active {
-      transform: scale(0.98);
-    }
+    .slots { position:absolute; bottom:6px; left:6px; display:flex; gap:6px; flex-wrap:wrap; align-items:center; z-index:3; }
+    .slot-dot { width:12px; height:12px; border-radius:50%; background:#eee; box-shadow:0 1px 1px rgba(0,0,0,0.12); display:inline-block; flex-shrink:0; border:1px solid rgba(0,0,0,0.06); }
+    .slot-dot.morning { background: var(--morning-color); }
+    .slot-dot.evening { background: var(--evening-color); }
+    .slot-count { font-size:11px; padding:2px 6px; border-radius:999px; background: rgba(0,0,0,0.08); font-weight:600; }
 
-    .date-num {
-      position: absolute;
-      right: 8px;
-      top: 4px;
-      font-weight: 700;
-      color: var(--accent-dark);
-      font-size: 14px;
-    }
-
-    @media (max-width: 768px) {
-      .date-num {
-        font-size: 12px;
-        right: 6px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .date-num {
-        font-size: 10px;
-        right: 3px;
-        top: 2px;
-      }
-    }
-
-    .available {
-      color: var(--muted);
-      font-size: 12px;
-      margin-top: auto;
-      text-align: center;
-      padding-top: 4px;
-    }
-
-    @media (max-width: 768px) {
-      .available {
-        font-size: 10px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .available {
-        font-size: 9px;
-        margin-top: 2px;
-      }
-    }
-
-    .booked {
-      background: var(--booked-bg) !important;
-      border-color: #d9993a !important;
-      color: #4b1a00 !important;
-      font-weight: bold;
-    }
-
-    .multibooked {
-      background: var(--multi-bg) !important;
-      border-color: #bb7a25 !important;
-    }
-
-    .slots {
-      position: absolute;
-      bottom: 4px;
-      left: 4px;
-      display: flex;
-      gap: 4px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 480px) {
-      .slots {
-        gap: 3px;
-      }
-    }
-
-    .slot-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #eee;
-      flex-shrink: 0;
-    }
-
-    @media (max-width: 768px) {
-      .slot-dot {
-        width: 8px;
-        height: 8px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .slot-dot {
-        width: 6px;
-        height: 6px;
-      }
-    }
-
-    .slot-paid {
-      background: var(--success);
-    }
-
-    .slot-unpaid {
-      background: #d97706;
-    }
-
-    aside {
-      background: var(--bg-card);
-      border: 3px solid var(--border);
-      padding: 12px;
-      border-radius: 14px;
-    }
-
-    @media (max-width: 900px) {
-      aside {
-        border-width: 2px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      aside {
-        border-width: 2px;
-        padding: 10px;
-      }
-    }
-
-    aside strong {
-      display: block;
-      font-size: 16px;
-      margin-bottom: 4px;
-    }
-
-    @media (max-width: 480px) {
-      aside strong {
-        font-size: 14px;
-      }
-    }
-
-    .booking-item {
-      background: #fff2d6;
-      border: 2px solid var(--border);
-      padding: 10px;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    @media (max-width: 900px) {
-      .booking-item {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .booking-item {
-        padding: 8px;
-        margin-bottom: 8px;
-        border-radius: 10px;
-        font-size: 13px;
-      }
-    }
-
-    .booking-item strong {
-      font-size: 14px;
-      color: var(--header-text);
-    }
-
-    .muted {
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    @media (max-width: 480px) {
-      .muted {
-        font-size: 12px;
-      }
-    }
-
-    .btn-remove {
-      background: var(--danger);
-      border: none;
-      color: white;
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-      cursor: pointer;
-      white-space: nowrap;
-      flex-shrink: 0;
-      min-height: 32px;
-    }
-
-    @media (max-width: 480px) {
-      .btn-remove {
-        padding: 8px 12px;
-        min-height: 36px;
-        font-size: 13px;
-      }
-    }
-
-    .btn-remove:active {
-      transform: scale(0.95);
-    }
+    aside { background:var(--bg-card); border:3px solid var(--border); padding:12px; border-radius:14px; }
+    .booking-item { background:#fff2d6; border:2px solid var(--border); padding:10px; border-radius:12px; margin-bottom:10px; display:flex; justify-content:space-between; gap:8px; align-items:center; }
+    .btn-remove { background:var(--danger); border:none; color:white; padding:6px 10px; border-radius:8px; font-size:12px; cursor:pointer; min-height:32px; }
+    .muted { color:var(--muted); font-size:13px; }
 
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.55);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 40;
-      padding: 12px;
-      overflow-y: auto;
-      animation: fadeIn 0.2s ease;
+      position:fixed; inset:0; background: rgba(0,0,0,0.55); display:flex; justify-content:center; align-items:center;
+      z-index:40; padding:12px; overflow-y:auto; animation: fadeIn 0.18s ease;
+    }
+    .modal { background:#fffaf0; padding:20px; border-radius:14px; width:100%; max-width:420px; border:3px solid var(--border); box-shadow:0 10px 40px rgba(0,0,0,0.3); }
+    .modal h3 { margin-top:0; margin-bottom:12px; color:var(--header-text); font-size:18px; }
+    .modal-bookings { max-height:200px; overflow-y:auto; margin-bottom:12px; border:1px solid var(--border); border-radius:10px; padding:6px; background:#fff7e9; }
+    .modal-booking-item { background:#fff2d6; border:1px solid var(--border); border-radius:10px; padding:8px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; gap:8px; cursor:pointer; }
+    .modal-form-group { margin-bottom:10px; }
+    .modal-form-row { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+
+    .modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; flex-wrap:wrap; }
+
+    /* small screens tweaks */
+    @media (max-width:900px) { .main { grid-template-columns: 1fr; } }
+    @media (max-width:480px) {
+      h1 { font-size:16px; }
+      .container { padding:12px; }
+      .date-num { font-size:12px; }
+      .slot-dot { width:10px; height:10px; }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    .modal {
-      background: #fffaf0;
-      padding: 20px;
-      border-radius: 14px;
-      width: 100%;
-      max-width: 400px;
-      border: 3px solid var(--border);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from {
-        transform: translateY(30px);
-        opacity: 0;
-      }
-      to {
-        transform: translateY(0);
-        opacity: 1;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .modal {
-        max-width: 90vw;
-        padding: 16px;
-        border-width: 2px;
-      }
-    }
-
-    .modal h3 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      color: var(--header-text);
-      font-size: 18px;
-    }
-
-    @media (max-width: 480px) {
-      .modal h3 {
-        font-size: 16px;
-      }
-    }
-
-    .modal-bookings {
-      max-height: 200px;
-      overflow-y: auto;
-      margin-bottom: 12px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 6px;
-    }
-
-    @media (max-width: 480px) {
-      .modal-bookings {
-        max-height: 150px;
-      }
-    }
-
-    .modal-booking-item {
-      background: #fff2d6;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 8px;
-      margin-bottom: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .modal-booking-item:hover {
-      background: #ffecb3;
-    }
-
-    .modal-booking-item:active {
-      transform: scale(0.98);
-    }
-
-    .modal-booking-item button {
-      background: var(--danger);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 4px 8px;
-      cursor: pointer;
-      font-size: 12px;
-      flex-shrink: 0;
-      min-width: 30px;
-      min-height: 30px;
-    }
-
-    @media (max-width: 480px) {
-      .modal-booking-item button {
-        padding: 6px 10px;
-        min-height: 34px;
-      }
-    }
-
-    .modal-form-group {
-      margin-bottom: 10px;
-    }
-
-    .modal-form-group label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 500;
-      font-size: 13px;
-    }
-
-    @media (max-width: 480px) {
-      .modal-form-group {
-        margin-bottom: 12px;
-      }
-
-      .modal-form-group label {
-        font-size: 14px;
-      }
-    }
-
-    .modal-form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    @media (max-width: 480px) {
-      .modal-form-row {
-        gap: 10px;
-      }
-    }
-
-    .modal-actions {
-      display: flex;
-      justify-content: flex-end;
-      gap: 8px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    @media (max-width: 480px) {
-      .modal-actions {
-        gap: 10px;
-      }
-
-      .modal-actions button {
-        flex: 1;
-        min-width: 100px;
-      }
-    }
-
-    .book-list {
-      max-height: 500px;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: var(--border) var(--bg-main);
-    }
-
-    .book-list::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .book-list::-webkit-scrollbar-track {
-      background: var(--bg-main);
-    }
-
-    .book-list::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 3px;
-    }
-
-    @media (max-width: 900px) {
-      .book-list {
-        max-height: 300px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .book-list {
-        max-height: 250px;
-      }
-    }
-
-    /* Touch-friendly improvements */
-    @media (hover: none) and (pointer: coarse) {
-      .day {
-        min-height: 60px;
-      }
-
-      button, select, input {
-        min-height: 44px;
-        min-width: 44px;
-      }
-
-      .btn-remove {
-        min-height: 40px;
-      }
-    }
-
-    /* Landscape mode optimization */
-    @media (max-height: 600px) and (orientation: landscape) {
-      .container {
-        margin: 8px auto;
-        padding: 8px;
-      }
-
-      h1 {
-        font-size: 14px;
-      }
-
-      .day {
-        min-height: 50px;
-        padding: 4px;
-      }
-
-      .available {
-        font-size: 10px;
-      }
-    }
   </style>
 </head>
-
 <body>
   <div class="container">
     <div class="topbar">
       <h1>🛕 శ్రీ INFINITY<br>CONVENTION HALL & BANQUETS</h1>
 
       <div class="controls">
-        <label class="muted">Hall</label>
-        <select id="hallSelect"></select>
-        <button id="prevBtn" class="btn secondary">◀ Prev</button>
-        <div id="monthLabel" style="min-width:120px; text-align:center; white-space:nowrap;" class="muted"></div>
-        <button id="nextBtn" class="btn secondary">Next ▶</button>
+        <label class="muted" for="hallSelect">Hall</label>
+        <select id="hallSelect" aria-label="Select hall"></select>
+
+        <button id="prevBtn" class="btn secondary" aria-label="Previous month">◀ Prev</button>
+        <div id="monthLabel" style="min-width:140px; text-align:center; white-space:nowrap;" class="muted" aria-live="polite"></div>
+        <button id="nextBtn" class="btn secondary" aria-label="Next month">Next ▶</button>
       </div>
     </div>
 
     <main class="main">
       <section>
-        <div class="weekdays" id="weekdays"></div>
-        <div class="calendar" id="calendarGrid"></div>
+        <div class="weekdays" id="weekdays" aria-hidden="false"></div>
+        <div class="calendar" id="calendarGrid" role="grid" aria-label="Calendar"></div>
       </section>
 
       <aside>
         <strong>Bookings</strong>
-        <div class="muted">Click a date to add/view</div>
+        <div class="muted">Click a date to add / view / remove</div>
         <div id="bookCount" style="margin-top:8px; font-weight:600;"></div>
         <div class="book-list" id="bookList" style="margin-top:12px;"></div>
       </aside>
@@ -778,9 +158,9 @@
   </div>
 
   <template id="modalTpl">
-    <div class="modal-backdrop">
-      <div class="modal">
-        <h3 id="modalTitle" style="margin-top:0; color:var(--header-text)">Booking</h3>
+    <div class="modal-backdrop" tabindex="-1">
+      <div class="modal" role="dialog" aria-modal="true">
+        <h3 id="modalTitle">Booking</h3>
 
         <div class="modal-bookings" id="modalBookingList"></div>
 
@@ -829,22 +209,26 @@
   </template>
 
   <script>
+    // Halls
     const halls = [
       { id: 'main_hall', name: 'Main Hall' },
       { id: 'banquet_hall', name: 'Banquet Hall' }
     ];
 
-    const STORAGE = 'traditional_bookings_v5';
+    const STORAGE = 'traditional_bookings_v6';
     let state = {
       current: new Date(),
       selectedHall: halls[0].id,
       bookings: {}
     };
 
+    // load from localStorage
     try {
       const raw = localStorage.getItem(STORAGE);
       if (raw) state.bookings = JSON.parse(raw);
-    } catch (e) { state.bookings = {}; }
+    } catch (e) {
+      state.bookings = {};
+    }
 
     const hallSelect = document.getElementById('hallSelect');
     const monthLabel = document.getElementById('monthLabel');
@@ -853,22 +237,37 @@
     const bookList = document.getElementById('bookList');
     const bookCount = document.getElementById('bookCount');
 
-    function init() {
+    function init(){
       hallSelect.innerHTML = halls.map(h => `<option value="${h.id}">${h.name}</option>`).join('');
-      weekdaysRow.innerHTML = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(n => `<div>${n}</div>`).join('');
+      weekdaysRow.innerHTML = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(n => `<div>${n}</div>`).join('');
+      hallSelect.value = state.selectedHall;
       render();
     }
 
-    function formatDateKey(d) {
-      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    function formatDateKeyFromParts(y,m,d){
+      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
     }
 
-    function getHallBookings() {
+    function formatDateKey(date){
+      return formatDateKeyFromParts(date.getFullYear(), date.getMonth()+1, date.getDate());
+    }
+
+    function getHallBookings(){
       if (!state.bookings[state.selectedHall]) state.bookings[state.selectedHall] = {};
       return state.bookings[state.selectedHall];
     }
 
-    function render() {
+    // save state to localStorage
+    function persist(){
+      try {
+        localStorage.setItem(STORAGE, JSON.stringify(state.bookings));
+      } catch(e) {
+        console.warn('Unable to persist bookings', e);
+      }
+    }
+
+    // Render calendar for current month
+    function render(){
       calendarGrid.innerHTML = '';
       const cur = state.current;
       const year = cur.getFullYear();
@@ -881,10 +280,15 @@
       const total = last.getDate();
       const hallBookings = getHallBookings();
 
+      // empty slots before first day
       for (let i = 0; i < startIndex; i++) {
-        const e = document.createElement('div'); e.className = 'day'; e.style.visibility = 'hidden'; calendarGrid.appendChild(e);
+        const e = document.createElement('div');
+        e.className = 'day';
+        e.setAttribute('aria-hidden', 'true');
+        calendarGrid.appendChild(e);
       }
-      for (let d = 1; d <= total; d++) {
+
+      for (let d = 1; d <= total; d++){
         const date = new Date(year, month, d);
         const key = formatDateKey(date);
         const el = document.createElement('div');
@@ -892,6 +296,7 @@
         el.setAttribute('data-date', key);
         el.setAttribute('role', 'button');
         el.setAttribute('tabindex', '0');
+        el.setAttribute('aria-label', `Open bookings for ${key}`);
 
         const num = document.createElement('div');
         num.className = 'date-num';
@@ -900,156 +305,265 @@
 
         const dayBookings = Object.values(hallBookings).filter(b => key >= b.start && key <= b.end);
 
-        if (dayBookings.length === 0) {
+        // Determine presence of morning/evening bookings
+        const morningCount = dayBookings.filter(b => b.slot === 'Morning').length;
+        const eveningCount = dayBookings.filter(b => b.slot === 'Evening').length;
+        const totalCount = dayBookings.length;
+
+        if (totalCount === 0){
           const a = document.createElement('div');
           a.className = 'available';
           a.textContent = 'Available';
           el.appendChild(a);
         } else {
-          const slots = document.createElement('div');
-          slots.className = 'slots';
-          dayBookings.forEach(b => { const dot = document.createElement('div'); dot.className = 'slot-dot ' + (b.paid ? 'slot-paid' : 'slot-unpaid'); slots.appendChild(dot); });
-          el.appendChild(slots);
-          el.classList.add(dayBookings.length > 1 ? 'multibooked' : 'booked');
+          // Set class based on presence
+          if (morningCount > 0 && eveningCount > 0) {
+            el.classList.add('booked-multi');
+          } else if (morningCount > 0 && eveningCount === 0) {
+            el.classList.add('booked-morning');
+          } else if (eveningCount > 0 && morningCount === 0) {
+            el.classList.add('booked-evening');
+          }
+
+          // show a label
+          const a = document.createElement('div');
+          a.className = 'available';
+          if (morningCount > 0 && eveningCount > 0) a.textContent = `M & E (${totalCount})`;
+          else if (morningCount > 0) a.textContent = `Morning (${morningCount})`;
+          else a.textContent = `Evening (${eveningCount})`;
+          el.appendChild(a);
+
+          // slot dots for visual
+          const slotsWrap = document.createElement('div');
+          slotsWrap.className = 'slots';
+          // show at most 6 dots, then a count bubble
+          let dotsShown = 0;
+          dayBookings.forEach((b, idx) => {
+            if (dotsShown < 6) {
+              const dot = document.createElement('span');
+              dot.className = 'slot-dot ' + (b.slot === 'Morning' ? 'morning' : 'evening');
+              dot.title = `${b.name} • ${b.slot} • ${b.start} → ${b.end}`;
+              slotsWrap.appendChild(dot);
+              dotsShown++;
+            }
+          });
+          if (totalCount > 6) {
+            const more = document.createElement('span');
+            more.className = 'slot-count';
+            more.textContent = `+${totalCount - 6}`;
+            slotsWrap.appendChild(more);
+          }
+          el.appendChild(slotsWrap);
         }
 
+        // keyboard + click open modal
         el.addEventListener('click', () => openModal(key));
-        el.addEventListener('keypress', (e) => { if (e.key === 'Enter') openModal(key); });
+        el.addEventListener('keypress', (ev) => { if (ev.key === 'Enter' || ev.key === ' ') openModal(key); });
+
         calendarGrid.appendChild(el);
       }
 
       updateBookingList();
     }
 
-    function openModal(dateKey) {
+    // Create and open modal for a dateKey
+    function openModal(dateKey){
       const tpl = document.getElementById('modalTpl');
-      const node = tpl.content.cloneNode(true);
-      const backdrop = node.querySelector('.modal-backdrop');
+      const clone = tpl.content.cloneNode(true);
+      const backdrop = clone.querySelector('.modal-backdrop'); // root of cloned modal
+      const modal = backdrop.querySelector('.modal');
 
-      const m_name = node.getElementById('m_name');
-      const m_start = node.getElementById('m_start');
-      const m_end = node.getElementById('m_end');
-      const m_slot = node.getElementById('m_slot');
-      const m_price = node.getElementById('m_price');
-      const m_notes = node.getElementById('m_notes');
-      const modalBookingList = node.getElementById('modalBookingList');
+      // query elements within the modal
+      const titleEl = modal.querySelector('#modalTitle');
+      const m_name = modal.querySelector('#m_name');
+      const m_start = modal.querySelector('#m_start');
+      const m_end = modal.querySelector('#m_end');
+      const m_slot = modal.querySelector('#m_slot');
+      const m_price = modal.querySelector('#m_price');
+      const m_notes = modal.querySelector('#m_notes');
+      const modalBookingList = modal.querySelector('#modalBookingList');
+      const m_cancel = modal.querySelector('#m_cancel');
+      const m_confirm = modal.querySelector('#m_confirm');
 
       const hallBookings = getHallBookings();
       const bookingsForDate = Object.values(hallBookings).filter(b => dateKey >= b.start && dateKey <= b.end);
 
+      // for editing
       let currentEditId = null;
 
-      function loadBooking(b) {
+      function loadBooking(b){
         currentEditId = b.id;
         m_name.value = b.name;
         m_start.value = b.start;
         m_end.value = b.end;
         m_slot.value = b.slot;
         m_price.value = b.price;
-        m_notes.value = b.notes;
-        node.getElementById('modalTitle').textContent = 'Edit Booking';
+        m_notes.value = b.notes || '';
+        titleEl.textContent = 'Edit Booking';
       }
 
+      // populate existing bookings list inside modal
       modalBookingList.innerHTML = '';
-      bookingsForDate.forEach(b => {
-        const item = document.createElement('div');
-        item.className = 'modal-booking-item';
-        const span = document.createElement('span');
-        span.textContent = `${b.name} (${b.slot})`;
-        item.appendChild(span);
-        const rm = document.createElement('button');
-        rm.textContent = 'X';
-        rm.onclick = (e) => {
-          e.stopPropagation();
-          if (confirm(`Remove booking "${b.name}"?`)) {
-            delete hallBookings[b.id];
-            state.bookings[state.selectedHall] = hallBookings;
-            localStorage.setItem(STORAGE, JSON.stringify(state.bookings));
-            render();
-            document.body.removeChild(backdrop);
-          }
-        };
-        item.appendChild(rm);
-        item.onclick = () => loadBooking(b);
-        modalBookingList.appendChild(item);
+      if (bookingsForDate.length === 0) {
+        const info = document.createElement('div');
+        info.className = 'muted';
+        info.textContent = 'No bookings for this date yet.';
+        modalBookingList.appendChild(info);
+      } else {
+        bookingsForDate.forEach(b => {
+          const item = document.createElement('div');
+          item.className = 'modal-booking-item';
+          item.innerHTML = `<div><strong>${escapeHtml(b.name)}</strong><div class="muted">${b.start} → ${b.end} • ${b.slot} • ₹${b.price}</div></div>`;
+          const rm = document.createElement('button');
+          rm.textContent = 'X';
+          rm.title = 'Remove this booking';
+          rm.addEventListener('click', (ev) => {
+            ev.stopPropagation();
+            if (confirm(`Remove booking "${b.name}"?`)){
+              delete hallBookings[b.id];
+              state.bookings[state.selectedHall] = hallBookings;
+              persist();
+              render();
+              // close the modal if removed booking list becomes empty? we just refresh modal view
+              document.body.removeChild(backdrop);
+            }
+          });
+          item.appendChild(rm);
+          item.addEventListener('click', () => loadBooking(b));
+          modalBookingList.appendChild(item);
+        });
+      }
+
+      // prepare form for new booking by default
+      currentEditId = null;
+      titleEl.textContent = 'Add Booking';
+      m_name.value = '';
+      m_start.value = dateKey;
+      m_end.value = dateKey;
+      m_slot.value = 'Morning';
+      m_price.value = 5000;
+      m_notes.value = '';
+
+      // cancel handler
+      m_cancel.addEventListener('click', () => {
+        if (document.body.contains(backdrop)) document.body.removeChild(backdrop);
       });
 
-      if (bookingsForDate.length === 0) {
-        currentEditId = null;
-        node.getElementById('modalTitle').textContent = 'Add Booking';
-        m_name.value = '';
-        m_start.value = dateKey;
-        m_end.value = dateKey;
-        m_slot.value = 'Morning';
-        m_price.value = 5000;
-        m_notes.value = '';
-      }
-
-      node.getElementById('m_cancel').onclick = () => document.body.removeChild(backdrop);
-
-      node.getElementById('m_confirm').onclick = () => {
-        const name = m_name.value.trim() || 'Booking';
+      // confirm handler
+      m_confirm.addEventListener('click', () => {
+        const name = (m_name.value || 'Booking').trim();
         const start = m_start.value;
         const end = m_end.value;
         const slot = m_slot.value;
         const price = Number(m_price.value || 0);
-        const notes = m_notes.value;
+        const notes = m_notes.value || '';
+
+        if (!start || !end) {
+          alert('Please provide valid start and end dates.');
+          return;
+        }
+        if (new Date(start) > new Date(end)) {
+          alert('Start date cannot be after end date.');
+          return;
+        }
 
         if (currentEditId) {
-          hallBookings[currentEditId] = { ...hallBookings[currentEditId], name, start, end, slot, price, notes };
+          // update
+          const existing = hallBookings[currentEditId];
+          if (existing) {
+            hallBookings[currentEditId] = { ...existing, name, start, end, slot, price, notes };
+          }
         } else {
-          const id = 'bk_' + Date.now();
+          // create new booking
+          const id = 'bk_' + Date.now() + '_' + Math.floor(Math.random() * 1000);
           hallBookings[id] = { id, name, start, end, slot, price, amount: price, paid: true, notes, hallId: state.selectedHall };
         }
 
         state.bookings[state.selectedHall] = hallBookings;
-        localStorage.setItem(STORAGE, JSON.stringify(state.bookings));
-        document.body.removeChild(backdrop);
+        persist();
+        if (document.body.contains(backdrop)) document.body.removeChild(backdrop);
         render();
-      };
+      });
 
+      // allow clicking backdrop to close (but not clicks on modal)
+      backdrop.addEventListener('click', (ev) => {
+        if (ev.target === backdrop) {
+          if (document.body.contains(backdrop)) document.body.removeChild(backdrop);
+        }
+      });
+
+      // append to DOM
       document.body.appendChild(backdrop);
-      m_name.focus();
+
+      // focus first input
+      setTimeout(() => m_name.focus(), 50);
     }
 
-    function updateBookingList() {
+    // escape HTML for safety
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"]/g, function (s) {
+        return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[s];
+      });
+    }
+
+    // Update sidebar booking list for selected hall
+    function updateBookingList(){
       const hallBookings = getHallBookings();
-      const arr = Object.values(hallBookings).sort((a, b) => a.start.localeCompare(b.start));
+      const arr = Object.values(hallBookings).sort((a,b) => a.start.localeCompare(b.start) || a.name.localeCompare(b.name));
       bookList.innerHTML = '';
       bookCount.textContent = `Total: ${arr.length}`;
+
+      if (arr.length === 0){
+        const info = document.createElement('div');
+        info.className = 'muted';
+        info.textContent = 'No bookings yet for this hall.';
+        bookList.appendChild(info);
+        return;
+      }
 
       arr.forEach(b => {
         const item = document.createElement('div');
         item.className = 'booking-item';
         const info = document.createElement('div');
-        info.innerHTML = `<strong>${b.name}</strong><br>
+        info.innerHTML = `<strong>${escapeHtml(b.name)}</strong><br>
                           <span class='muted'>${b.start} → ${b.end} (${b.slot})</span><br>
                           <span class='muted'>₹${b.price}</span>`;
-        if (b.notes) info.innerHTML += `<br><span class='muted'>Notes: ${b.notes}</span>`;
+        if (b.notes) info.innerHTML += `<br><span class='muted'>Notes: ${escapeHtml(b.notes)}</span>`;
         item.appendChild(info);
 
         const btn = document.createElement('button');
         btn.textContent = 'Remove';
         btn.className = 'btn-remove';
-        btn.onclick = () => {
-          if (confirm(`Remove booking "${b.name}"?`)) {
+        btn.addEventListener('click', () => {
+          if (confirm(`Remove booking "${b.name}"?`)){
             delete hallBookings[b.id];
             state.bookings[state.selectedHall] = hallBookings;
-            localStorage.setItem(STORAGE, JSON.stringify(state.bookings));
+            persist();
             render();
           }
-        };
+        });
         item.appendChild(btn);
         bookList.appendChild(item);
       });
     }
 
-    document.getElementById('prevBtn').onclick = () => { state.current.setMonth(state.current.getMonth() - 1); render(); };
-    document.getElementById('nextBtn').onclick = () => { state.current.setMonth(state.current.getMonth() + 1); render(); };
-    hallSelect.onchange = () => { state.selectedHall = hallSelect.value; render(); };
+    // navigation & handlers
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      state.current.setMonth(state.current.getMonth() - 1);
+      render();
+    });
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      state.current.setMonth(state.current.getMonth() + 1);
+      render();
+    });
+    hallSelect.addEventListener('change', () => {
+      state.selectedHall = hallSelect.value;
+      render();
+    });
 
+    // init
     init();
+
   </script>
 </body>
-
 </html>
