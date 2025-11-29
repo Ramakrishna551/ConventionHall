@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title> I N F I N I T Y
+    CONVENTION HALL & BANQUETS</title>
+
+  <style>
+    :root{
+      --radius:14px;
+      --accent:#b65c09;
+      --accent-dark:#8d4505;
+      --bg-main:#fff7e3;
+      --bg-card:#ffefcf;
+      --border:#e7c27a;
+      --header-text:#7a3d00;
+      --day-bg:#fff4da;
+      --day-hover:#ffe8b3;
+      --booked-bg:#ffcc80;
+      --multi-bg:#f2b56e;
+      --muted:#8d704b;
+      --success:#0a7a33;
+      --danger:#b91c1c;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui;
+      background:var(--bg-main);
+      color:var(--header-text);
+    }
+
+    .container{
+      max-width:1100px;
+      margin:28px auto;
+      padding:20px;
+      border-radius:var(--radius);
+      background:var(--bg-card);
+      border:4px solid var(--border);
+      box-shadow:0 8px 22px rgba(0,0,0,0.2);
+    }
+
+    h1{
+      
+      text-align: center;
+      font-size:22px;font-weight:800;color:var(--header-text);margin:0}
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      border-bottom:2px solid var(--border);
+      padding-bottom:12px;
+    }
+    .controls{display:flex;align-items:center;gap:8px;}
+    select,button,input,textarea{padding:6px 10px;border-radius:10px;border:1px solid var(--border);background:#fff8ed;color:var(--header-text);}
+    button.btn{background:var(--accent);color:white;border:none;font-weight:600;cursor:pointer;}
+    button.secondary{background:white;color:var(--accent);border:2px solid var(--accent);}
+
+    .main{display:grid;grid-template-columns:1fr 350px;gap:20px;margin-top:16px;}
+    @media(max-width:900px){.main{grid-template-columns:1fr;}}
+
+    .weekdays{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:10px;text-align:center;font-weight:700;color:var(--accent-dark);}
+    .calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;}
+    .day{background:var(--day-bg);border:2px solid var(--border);border-radius:12px;min-height:80px;padding:8px;position:relative;transition:.2s;cursor:pointer;}
+    .day:hover{background:var(--day-hover);transform:scale(1.03);}
+    .date-num{position:absolute;right:10px;top:6px;font-weight:700;color:var(--accent-dark);}
+    .available{color:var(--muted);font-size:13px;margin-top:24px;text-align:center;}
+    .booked{background:var(--booked-bg) !important;border-color:#d9993a !important;color:#4b1a00 !important;font-weight:bold;}
+    .multibooked{background:var(--multi-bg) !important;border-color:#bb7a25 !important;}
+
+    .slots{position:absolute;bottom:6px;left:6px;display:flex;gap:6px;}
+    .slot-dot{width:10px;height:10px;border-radius:50%;background:#eee;}
+    .slot-paid{background:var(--success);}
+    .slot-unpaid{background:#d97706;}
+
+    aside{background:var(--bg-card);border:3px solid var(--border);padding:12px;border-radius:14px;}
+    .booking-item{background:#fff2d6;border:2px solid var(--border);padding:10px;border-radius:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+    .muted{color:var(--muted);}
+    .btn-remove{background:var(--danger);border:none;color:white;padding:4px 8px;border-radius:8px;font-size:12px;cursor:pointer;}
+
+    .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.55);display:flex;justify-content:center;align-items:center;z-index:40;}
+    .modal{background:#fffaf0;padding:18px;border-radius:14px;width:350px;border:3px solid var(--border);}
+    .modal-bookings{max-height:200px;overflow-y:auto;margin-bottom:12px;border:1px solid var(--border);border-radius:10px;padding:6px;}
+    .modal-booking-item{background:#fff2d6;border:1px solid var(--border);border-radius:10px;padding:6px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center;}
+    .modal-booking-item button{background:var(--danger);color:white;border:none;border-radius:6px;padding:2px 6px;cursor:pointer;font-size:12px;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <h1>🛕 శ్రీ INFINITY<br>CONVENTION HALL & BANQUETS</h1>
+      
+
+
+      <div class="controls">
+        <label class="muted">Hall</label>
+        <select id="hallSelect"></select>
+        <button id="prevBtn" class="btn secondary">◀ Prev</button>
+        <div id="monthLabel" style="min-width:150px;text-align:center" class="muted"></div>
+        <button id="nextBtn" class="btn secondary">Next ▶</button>
+      </div>
+    </div>
+
+    <main class="main">
+      <section>
+        <div class="weekdays" id="weekdays"></div>
+        <div class="calendar" id="calendarGrid"></div>
+      </section>
+
+      <aside>
+        <strong>Bookings</strong>
+        <div class="muted">Click a date to add/view</div>
+        <div id="bookCount" style="margin-top:6px"></div>
+        <div class="book-list" id="bookList" style="margin-top:14px;max-height:500px;overflow-y:auto"></div>
+      </aside>
+    </main>
+  </div>
+
+  <template id="modalTpl">
+    <div class="modal-backdrop">
+      <div class="modal">
+        <h3 id="modalTitle" style="margin-top:0;color:var(--header-text)">Booking</h3>
+
+        <div class="modal-bookings" id="modalBookingList"></div>
+
+        <label class="muted">Name</label>
+        <input id="m_name" />
+
+        <div style="display:flex;gap:8px;">
+          <div style="flex:1">
+            <label class="muted">Start</label>
+            <input id="m_start" type="date" />
+          </div>
+          <div style="flex:1">
+            <label class="muted">End</label>
+            <input id="m_end" type="date" />
+          </div>
+        </div>
+
+        <label class="muted">Time Slot</label>
+        <select id="m_slot">
+          <option value="Morning">Morning</option>
+          <option value="Evening">Evening</option>
+        </select>
+
+        <label class="muted">Price</label>
+        <input id="m_price" type="number" value="5000" />
+
+        <label class="muted">Notes</label>
+        <textarea id="m_notes" rows="2"></textarea>
+
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+          <button id="m_cancel" class="btn secondary">Cancel</button>
+          <button id="m_confirm" class="btn">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    const halls = [
+      {id:'main_hall', name:'Main Hall'},
+      {id:'banquet_hall', name:'Banquet Hall'}
+    ];
+
+    const STORAGE = 'traditional_bookings_v5';
+    let state = {
+      current: new Date(),
+      selectedHall: halls[0].id,
+      bookings: {} // { hallId: { bookingId: {...} } }
+    };
+
+    try {
+      const raw = localStorage.getItem(STORAGE);
+      if(raw) state.bookings = JSON.parse(raw);
+    } catch(e){ state.bookings = {}; }
+
+    const hallSelect = document.getElementById('hallSelect');
+    const monthLabel = document.getElementById('monthLabel');
+    const calendarGrid = document.getElementById('calendarGrid');
+    const weekdaysRow = document.getElementById('weekdays');
+    const bookList = document.getElementById('bookList');
+    const bookCount = document.getElementById('bookCount');
+
+    function init(){
+      hallSelect.innerHTML = halls.map(h=>`<option value="${h.id}">${h.name}</option>`).join('');
+      weekdaysRow.innerHTML = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map(n=>`<div>${n}</div>`).join('');
+      render();
+    }
+
+    function formatDateKey(d){
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    function getHallBookings(){
+      if(!state.bookings[state.selectedHall]) state.bookings[state.selectedHall] = {};
+      return state.bookings[state.selectedHall];
+    }
+
+    function render(){
+      calendarGrid.innerHTML = '';
+      const cur = state.current;
+      const year = cur.getFullYear();
+      const month = cur.getMonth();
+      monthLabel.textContent = cur.toLocaleString(undefined,{month:'long',year:'numeric'});
+
+      const first = new Date(year, month, 1);
+      const last = new Date(year, month+1, 0);
+      const startIndex = first.getDay();
+      const total = last.getDate();
+      const hallBookings = getHallBookings();
+
+      for(let i=0;i<startIndex;i++){
+        const e=document.createElement('div');e.className='day';e.style.visibility='hidden';calendarGrid.appendChild(e);
+      }
+      for(let d=1;d<=total;d++){
+        const date = new Date(year, month, d);
+        const key = formatDateKey(date);
+        const el = document.createElement('div');
+        el.className='day';
+        el.setAttribute('data-date',key);
+
+        const num = document.createElement('div');
+        num.className='date-num';
+        num.textContent=d;
+        el.appendChild(num);
+
+        const dayBookings = Object.values(hallBookings).filter(b=>key>=b.start && key<=b.end);
+
+        if(dayBookings.length===0){
+          const a = document.createElement('div');
+          a.className='available';
+          a.textContent='Available';
+          el.appendChild(a);
+        } else {
+          const slots = document.createElement('div');
+          slots.className='slots';
+          dayBookings.forEach(b=>{const dot=document.createElement('div');dot.className='slot-dot '+(b.paid?'slot-paid':'slot-unpaid');slots.appendChild(dot);});
+          el.appendChild(slots);
+          el.classList.add(dayBookings.length>1?'multibooked':'booked');
+        }
+
+        el.addEventListener('click',()=>openModal(key));
+        calendarGrid.appendChild(el);
+      }
+
+      updateBookingList();
+    }
+
+    function openModal(dateKey){
+      const tpl = document.getElementById('modalTpl');
+      const node = tpl.content.cloneNode(true);
+      const backdrop = node.querySelector('.modal-backdrop');
+
+      const m_name=node.getElementById('m_name');
+      const m_start=node.getElementById('m_start');
+      const m_end=node.getElementById('m_end');
+      const m_slot=node.getElementById('m_slot');
+      const m_price=node.getElementById('m_price');
+      const m_notes=node.getElementById('m_notes');
+      const modalBookingList = node.getElementById('modalBookingList');
+
+      const hallBookings = getHallBookings();
+      const bookingsForDate = Object.values(hallBookings).filter(b=>dateKey>=b.start && dateKey<=b.end);
+
+      let currentEditId = null;
+
+      function loadBooking(b){
+        currentEditId = b.id;
+        m_name.value = b.name;
+        m_start.value = b.start;
+        m_end.value = b.end;
+        m_slot.value = b.slot;
+        m_price.value = b.price;
+        m_notes.value = b.notes;
+        node.getElementById('modalTitle').textContent = 'Edit Booking';
+      }
+
+      // Show all bookings for this date
+      modalBookingList.innerHTML = '';
+      bookingsForDate.forEach(b=>{
+        const item = document.createElement('div');
+        item.className='modal-booking-item';
+        item.innerHTML = `<span>${b.name} (${b.slot})</span>`;
+        const rm = document.createElement('button');
+        rm.textContent='X';
+        rm.onclick = (e) => {
+          e.stopPropagation();
+          if(confirm(`Remove booking "${b.name}"?`)){
+            delete hallBookings[b.id];
+            state.bookings[state.selectedHall] = hallBookings;
+            localStorage.setItem(STORAGE, JSON.stringify(state.bookings));
+            render();
+            document.body.removeChild(backdrop);
+          }
+        };
+        item.appendChild(rm);
+        item.onclick = () => loadBooking(b);
+        modalBookingList.appendChild(item);
+      });
+
+      if(bookingsForDate.length===0){
+        currentEditId = null;
+        node.getElementById('modalTitle').textContent = 'Add Booking';
+        m_name.value = '';
+        m_start.value = dateKey;
+        m_end.value = dateKey;
+        m_slot.value = 'Morning';
+        m_price.value = 5000;
+        m_notes.value = '';
+      }
+
+      node.getElementById('m_cancel').onclick = () => document.body.removeChild(backdrop);
+
+      node.getElementById('m_confirm').onclick = () => {
+        const name = m_name.value.trim() || 'Booking';
+        const start = m_start.value;
+        const end = m_end.value;
+        const slot = m_slot.value;
+        const price = Number(m_price.value || 0);
+        const notes = m_notes.value;
+
+        if(currentEditId){
+          hallBookings[currentEditId] = { ...hallBookings[currentEditId], name, start, end, slot, price, notes };
+        } else {
+          const id = 'bk_'+Date.now();
+          hallBookings[id] = { id, name, start, end, slot, price, amount:price, paid:true, notes, hallId:state.selectedHall };
+        }
+
+        state.bookings[state.selectedHall] = hallBookings;
+        localStorage.setItem(STORAGE, JSON.stringify(state.bookings));
+        document.body.removeChild(backdrop);
+        render();
+      };
+
+      document.body.appendChild(backdrop);
+    }
+
+    function updateBookingList(){
+      const hallBookings = getHallBookings();
+      const arr = Object.values(hallBookings).sort((a,b)=>a.start.localeCompare(b.start));
+      bookList.innerHTML = '';
+      bookCount.textContent = `Total: ${arr.length}`;
+
+      arr.forEach(b=>{
+        const item = document.createElement('div');
+        item.className='booking-item';
+        const info = document.createElement('div');
+        info.innerHTML = `<strong>${b.name}</strong><br>
+                          <span class='muted'>${b.start} → ${b.end} (${b.slot})</span><br>
+                          <span class='muted'>Price: ${b.price}</span><br>
+                          <span class='muted'>Notes: ${b.notes}</span>`;
+        item.appendChild(info);
+
+        const btn = document.createElement('button');
+        btn.textContent='Remove';
+        btn.className='btn-remove';
+        btn.onclick = () => {
+          if(confirm(`Remove booking "${b.name}"?`)){
+            delete hallBookings[b.id];
+            state.bookings[state.selectedHall] = hallBookings;
+            localStorage.setItem(STORAGE, JSON.stringify(state.bookings));
+            render();
+          }
+        };
+        item.appendChild(btn);
+        bookList.appendChild(item);
+      });
+    }
+
+    document.getElementById('prevBtn').onclick = ()=>{state.current.setMonth(state.current.getMonth()-1);render();};
+    document.getElementById('nextBtn').onclick = ()=>{state.current.setMonth(state.current.getMonth()+1);render();};
+    hallSelect.onchange = ()=>{state.selectedHall = hallSelect.value; render();};
+
+    init();
+  </script>
+</body>
+</html>
